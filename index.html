@@ -1,0 +1,66 @@
+
+  <link rel="stylesheet" href="updates.css" />
+  <link rel="stylesheet" href="realtime.css" />
+</head>
+      <div class="topbar-meta">
+        <div class="app-tabs" role="tablist" aria-label="AromaGuard workspace">
+          <button class="app-tab active" id="simulationTab" type="button" role="tab" aria-selected="true">Simulation</button>
+          <button class="app-tab" id="realtimeTab" type="button" role="tab" aria-selected="false">Realtime mode</button>
+        </div>
+        <div class="live-dot"><span></span> Live simulation</div>
+
+    <section id="simulationView">
+    <section class="toolbar" aria-label="Batch controls">
+    </section>
+    </section>
+
+    <section class="realtime-view" id="realtimeView" hidden aria-labelledby="realtimeHeading">
+      <div class="realtime-heading">
+        <div><p class="eyebrow">ESP32 device bridge</p><h2 id="realtimeHeading">Realtime monitoring</h2><p>Connect a production dryer to receive live sensor readings and issue controller commands.</p></div>
+        <div class="connection-badge" id="connectionBadge"><i data-lucide="plug-zap"></i><span>Device disconnected</span></div>
+      </div>
+      <div class="realtime-grid">
+        <article class="realtime-panel connection-panel">
+          <div class="panel-header"><div><p class="eyebrow">Connect device</p><h2>ESP32 transport</h2></div><span class="sensor-pill"><i data-lucide="shield-check"></i> Local control</span></div>
+          <label class="field-label" for="transportSelect">Connection type</label>
+          <select class="field-control" id="transportSelect"><option value="serial">USB serial</option><option value="websocket">Secure WebSocket</option></select>
+          <div id="serialFields">
+            <label class="field-label" for="baudRate">Baud rate</label>
+            <select class="field-control" id="baudRate"><option value="115200">115200</option><option value="9600">9600</option></select>
+          </div>
+          <div id="websocketFields" hidden>
+            <label class="field-label" for="websocketUrl">ESP32 WebSocket address</label>
+            <input class="field-control" id="websocketUrl" type="url" placeholder="wss://dryer.example.in/ws" />
+          </div>
+          <button class="button primary connect-button" id="connectDeviceBtn" type="button"><i data-lucide="plug"></i>Connect ESP32</button>
+          <button class="button disconnect-button" id="disconnectDeviceBtn" type="button" disabled><i data-lucide="unlink"></i>Disconnect</button>
+          <p class="connection-note" id="connectionNote">Choose USB serial for a directly connected ESP32.</p>
+        </article>
+
+        <article class="realtime-panel live-panel">
+          <div class="panel-header"><div><p class="eyebrow">Live device data</p><h2>Chamber readings</h2></div><span class="live-data-chip" id="telemetryStamp">Waiting for data</span></div>
+          <div class="live-stat-grid">
+            <div class="live-stat"><span>Temperature</span><b id="liveTemperature">--</b><small>°C</small></div>
+            <div class="live-stat"><span>Humidity</span><b id="liveHumidity">--</b><small>% RH</small></div>
+            <div class="live-stat"><span>Tray weight</span><b id="liveWeight">--</b><small>kg</small></div>
+            <div class="live-stat"><span>Battery</span><b id="liveBattery">--</b><small>%</small></div>
+          </div>
+          <div class="device-status-row"><span>Controller status</span><strong id="liveStatus">No ESP32 connected</strong><span class="device-time" id="liveTime">--:--:--</span></div>
+        </article>
+
+        <article class="realtime-panel remote-panel">
+          <div class="panel-header"><div><p class="eyebrow">Remote dryer controls</p><h2>Send to ESP32</h2></div><span class="status-chip" id="remoteMode">READY</span></div>
+          <div class="remote-actions">
+            <button class="remote-action" id="remoteAutoBtn" type="button" disabled><i data-lucide="bot"></i><span>Auto balance</span><small>Fan and heater protect 29–32°C</small></button>
+            <button class="remote-action" id="remoteStartBtn" type="button" disabled><i data-lucide="play"></i><span>Start dryer</span><small>Begin monitored drying cycle</small></button>
+            <button class="remote-action danger-action" id="remoteStopBtn" type="button" disabled><i data-lucide="square"></i><span>Stop dryer</span><small>Stop fan and heater now</small></button>
+          </div>
+          <p class="connection-note">Commands are sent only after an ESP32 connection is established.</p>
+        </article>
+      </div>
+      <section class="protocol-panel">
+        <div><p class="eyebrow">Telemetry format</p><h2>ESP32 sends a JSON line every few seconds</h2></div>
+        <code>{"temperature":30.1,"humidity":42,"weight":1.178,"battery":78,"fan":false,"heater":false,"running":true}</code>
+      </section>
+    </section>
+  </main>
